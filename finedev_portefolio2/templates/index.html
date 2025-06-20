@@ -295,4 +295,24 @@
     </div>
 </section>
 
+<script>
+
+const BASE_IMAGE_PATH = 'images/';
+
+
+function loadImage(filename) {
+    const img = new Image();
+    img.src = `${BASE_IMAGE_PATH}${filename}`;
+    return img;
+}
+
+
+document.querySelectorAll('img').forEach(img => {
+    if (!img.src.includes('/images/')) {
+        const filename = img.src.split('/').pop();
+        img.src = `${BASE_IMAGE_PATH}${filename}`;
+    }
+});
+</script>
+
 {% endblock %}
