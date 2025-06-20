@@ -11,13 +11,13 @@
                 <p>Je crée des solutions web modernes et performantes avec des technologies à la pointe.</p>
                 <div class="btn-container">
                     <a href="#contact" class="btn">Me contacter</a>
-                    <a href="{{ url_for('static', filename='cv.pdf') }}" download class="btn btn-secondary">Télécharger mon CV</a>
+                    <a href="static/cv.pdf" download class="btn btn-secondary">Télécharger mon CV</a>
                 </div>
             </div>
             <div class="home-image animate-right">
-                <img src="{{ url_for('static', filename='images/profile.jpg') }}"
-                     alt="Photo de profil"
-                     onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/default.jpg') }}'">
+                <img src="templates/images/profile.jpg"
+                     alt="Photo de profil">
+
             </div>
         </div>
     </div>
@@ -31,7 +31,7 @@
             <!-- Projet 1 -->
             <div class="project-card animate-up">
                 <div class="project-image">
-                    <img src="{{ url_for('static', filename='images/projects/ecommerce.jpg') }}"
+                    <img src="templates/images/projects/ecommerce.jpg"
                          alt="Site E-commerce"
                          loading="lazy">
                 </div>
@@ -51,7 +51,7 @@
             <!-- Projet 2 -->
             <div class="project-card animate-up delay-1">
                 <div class="project-image">
-                    <img src="{{ url_for('static', filename='images/projects/finetrainee.png') }}"
+                    <img src="templates/images/projects/finetrainee.png"
                          alt="gestion des stagiaires"
                          loading="lazy">
                 </div>
@@ -69,7 +69,7 @@
             <!-- Projet 3 -->
             <div class="project-card animate-up delay-2">
                 <div class="project-image">
-                    <img src="{{ url_for('static', filename='images/projects/portfolio.png') }}"
+                    <img src="templates/images/projects/portfolio.png"
                          alt="Portfolio personnel"
                          loading="lazy">
                 </div>
