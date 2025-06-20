@@ -14,11 +14,9 @@
                     <a href="static/cv.pdf" download class="btn btn-secondary">Télécharger mon CV</a>
                 </div>
             </div>
-            <div class="home-image animate-right">
-                <img src="/static/images/profile.jpg"
-                     alt="Photo de profil">
-
-            </div>
+<div class="home-image animate-right">
+    <img data-image="profile.jpg" alt="Photo de profil">
+</div>
         </div>
     </div>
 </section><br>
@@ -30,11 +28,9 @@
         <div class="projects-grid">
             <!-- Projet 1 -->
             <div class="project-card animate-up">
-                <div class="project-image">
-                    <img src="images/projects/ecommerce.jpg"
-                         alt="Site E-commerce"
-                         loading="lazy">
-                </div>
+<div class="project-image">
+    <img data-image="projects/ecommerce.jpg" alt="Site E-commerce" loading="lazy">
+</div>
                 <div class="project-info">
                     <h3>Site E-commerce</h3>
                     <p>Un site e-commerce complet avec panier et paiement</p>
@@ -50,11 +46,11 @@
 
             <!-- Projet 2 -->
             <div class="project-card animate-up delay-1">
-                <div class="project-image">
-                    <img src="images/projects/finetrainee.png"
-                         alt="gestion des stagiaires"
-                         loading="lazy">
-                </div>
+<div class="project-image">
+    <img data-image="projects/finetrainee.png"
+         alt="gestion des stagiaires"
+         loading="lazy">
+</div>
                 <div class="project-info">
                     <h3>FineTrainee</h3>
                     <p>Application de gestion des Stagiaires optimisée</p>
@@ -68,11 +64,11 @@
 
             <!-- Projet 3 -->
             <div class="project-card animate-up delay-2">
-                <div class="project-image">
-                    <img src="images/projects/portfolio.png"
-                         alt="Portfolio personnel"
-                         loading="lazy">
-                </div>
+<div class="project-image">
+    <img data-image="projects/portfolio.png"
+         alt="Portfolio personnel"
+         loading="lazy">
+</div>
                 <div class="project-info">
                     <h3>Portfolio personnel</h3>
                     <p>Un portfolio responsive moderne</p>
@@ -193,11 +189,9 @@
 <section id="about" class="section about-section">
     <div class="container">
         <div class="about-content">
-            <div class="about-image animate-left">
-                <img src="images/about.jpg"
-                     alt="À propos"
-                     loading="lazy">
-            </div>
+<div class="about-image animate-left">
+    <img data-image="about.jpg" alt="À propos" loading="lazy">
+</div>
             <div class="about-text animate-right">
                 <h2 class="section-title">À propos de moi</h2>
                 <p>Passionné par le développement web depuis mon plus jeune âge, j'ai acquis au fil des années une expertise solide dans la création d'applications web performantes et ergonomiques.</p>
@@ -295,7 +289,116 @@
     </div>
 </section>
 
+<script src="js/image-path-manager.js">
 
+    // image-path-manager.js
+document.addEventListener('DOMContentLoaded', function() {
+    // Configuration des chemins
+    const IMAGE_CONFIG = {
+        basePath: getBasePath(),
+        defaultImages: {
+            profile: 'default-profile.jpg',
+            project: 'default-project.png',
+            about: 'default-about.jpg'
+        },
+        imageSelectors: {
+            profile: '[data-image-profile], .home-image img',
+            projects: '[data-image-project], .project-image img',
+            about: '[data-image-about], .about-image img'
+        }
+    };
+
+    // Initialisation
+    initImageManager(IMAGE_CONFIG);
+
+    // Fonction pour détecter l'environnement et retourner le bon chemin de base
+    function getBasePath() {
+        const isGitHubPages = window.location.hostname.includes('github.io');
+        const isLocalDevelopment = window.location.hostname === 'localhost' || 
+                                 window.location.hostname === '127.0.0.1';
+
+        if (isGitHubPages) {
+            const repoName = window.location.pathname.split('/')[1] || '';
+            return repoName ? `/${repoName}/images/` : '/images/';
+        }
+
+        return isLocalDevelopment ? '/static/images/' : '/images/';
+    }
+
+    // Fonction principale d'initialisation
+    function initImageManager(config) {
+        updateAllImagePaths(config);
+        setupImageErrorHandlers(config);
+        observeDynamicContent(config);
+    }
+
+    // Met à jour tous les chemins d'images
+    function updateAllImagePaths(config) {
+        // Images de profil
+        document.querySelectorAll(config.imageSelectors.profile).forEach(img => {
+            const imageName = img.dataset.imageProfile || 'profile.jpg';
+            img.src = `${config.basePath}${imageName}`;
+        });
+
+        // Images de projets
+        document.querySelectorAll(config.imageSelectors.projects).forEach(img => {
+            const imagePath = img.dataset.imageProject || 
+                             `projects/${img.src.split('/').pop()}`;
+            img.src = `${config.basePath}${imagePath}`;
+        });
+
+        // Image "À propos"
+        document.querySelectorAll(config.imageSelectors.about).forEach(img => {
+            const imageName = img.dataset.imageAbout || 'about.jpg';
+            img.src = `${config.basePath}${imageName}`;
+        });
+    }
+
+    // Configure la gestion des erreurs pour toutes les images
+    function setupImageErrorHandlers(config) {
+        document.querySelectorAll('img').forEach(img => {
+            img.onerror = function() {
+                const defaultImage = img.classList.contains('project-image') ? 
+                                    config.defaultImages.project :
+                                    img.classList.contains('about-image') ?
+                                    config.defaultImages.about :
+                                    config.defaultImages.profile;
+                
+                this.src = `${config.basePath}${defaultImage}`;
+                this.style.opacity = '0.8'; // Style visuel pour les images manquantes
+                console.warn(`Image non trouvée: ${this.src}`);
+            };
+        });
+    }
+
+    // Observe les changements du DOM pour le contenu dynamique
+    function observeDynamicContent(config) {
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.addedNodes.length) {
+                    updateAllImagePaths(config);
+                }
+            });
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
+
+    // API publique (optionnelle)
+    window.ImageManager = {
+        refresh: function() {
+            updateAllImagePaths(IMAGE_CONFIG);
+        },
+        setBasePath: function(newPath) {
+            IMAGE_CONFIG.basePath = newPath;
+            this.refresh();
+        }
+    };
+});
+</script>
 
 
 {% endblock %}
