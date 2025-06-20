@@ -1,0 +1,29 @@
+-- Script de création de la base de données
+CREATE DATABASE IF NOT EXISTS finedev_portfolio;
+
+USE finedev_portfolio;
+
+-- Table messages
+CREATE TABLE IF NOT EXISTS messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table projects
+CREATE TABLE IF NOT EXISTS projects (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    description TEXT NOT NULL,
+    technologies VARCHAR(255) NOT NULL,
+    link VARCHAR(255),
+    image_path VARCHAR(255)
+);
+
+-- Données de démonstration
+INSERT INTO projects (title, description, technologies, link, image_path) VALUES
+('Site E-commerce', 'Un site e-commerce complet avec panier et paiement', 'HTML, CSS, JavaScript, PHP, MySQL', 'https://github.com/example/ecommerce', 'ecommerce.jpg'),
+('Application météo', 'Application de prévision météo en temps réel', 'React, Node.js, API REST', 'https://github.com/example/weather-app', 'weather.jpg'),
+('Portfolio personnel', 'Un portfolio responsive moderne', 'HTML, CSS, JavaScript', 'https://github.com/example/portfolio', 'portfolio.jpg');
